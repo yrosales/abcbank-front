@@ -1,0 +1,34 @@
+<div class="container card mb-2 py-4">
+    <form [formGroup]="form">
+        <div class="d-flex flex-row justify-content-between align-items-center">
+            <div class="form-group input-group-lg">
+                <label for="firstName">First Name: </label><input class="form-control" formControlName="firstName" />
+            </div>
+            <div class="form-group input-group-lg">
+                <label for="secondName">Second Name: </label><input class="form-control" formControlName="secondName" />
+            </div>
+            <div class="form-group input-group-lg">
+                <label for="addresses">Address: </label><input class="form-control" formControlName="addresses" />
+            </div>
+        </div>
+        <div class="d-flex flex-row justify-content-between align-items-center">
+            <div class="form-group input-group-lg">
+                <label for="dateOfBirth">Day of birth: </label><input class="form-control" type="date"
+                    formControlName="dateOfBirth" />
+            </div>
+            <div class="form-group input-group-lg">
+                <label for="phoneNumbers">Phone number: </label><input class="form-control"
+                    formControlName="phoneNumbers" />
+            </div>
+            <div class="form-group input-group-lg">
+                <label for="personalPhoto">Photo: </label><input class="form-control" type="file"
+                    formControlName="personalPhoto" />
+            </div>
+            <div class="form-group">
+                <button class="btn btn-primary btn-block" (click)="submitForm()">
+                    Create
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
