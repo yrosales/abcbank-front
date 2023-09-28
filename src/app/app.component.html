@@ -1,6 +1,7 @@
 <div class="container card mb-2">
   <h1 class="card-title">Contacts</h1>
   <app-contact-edit (formData)="addContact($event)"></app-contact-edit>
+  <app-contact-filter (filterData)="filterContacts($event)"></app-contact-filter>
   <table class="table table-striped">
     <thead>
       <tr>
@@ -13,18 +14,14 @@
       </tr>
     </thead>
     <tbody>
-      <tr
-        *ngFor="let elemento of contacts"
-        (click)="showDevices(elemento)"
-        style="cursor: pointer"
-      >
+      <tr *ngFor="let elemento of contacts" style="cursor: pointer">
         <td>{{ elemento.firstName }}</td>
         <td>{{ elemento.secondName }}</td>
         <td>{{ elemento.addresses }}</td>
         <td>{{ elemento.dateOfBirth | date: 'dd/MM/yyyy'}}</td>
         <td>{{ elemento.phoneNumbers }}</td>
         <td style="white-space: nowrap">
-          <button class="btn btn-sm btn-danger btn-delete-user">
+          <button class="btn btn-sm btn-danger btn-delete-user" (click)="deleteContact(elemento.id)">
             <!--span *ngIf="user.isDeleting" class="spinner-border spinner-border-sm"></span-->
             <span>Delete</span>
           </button>

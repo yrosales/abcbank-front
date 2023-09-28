@@ -5,11 +5,13 @@ import { ReactiveFormsModule } from '@angular/forms';
 
 import { AppComponent } from './app.component';
 import { ContactEditComponent } from './contact-edit/contact-edit.component';
+import { ContactFilterComponent } from './contact-filter/contact-filter.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    ContactEditComponent
+    ContactEditComponent,
+    ContactFilterComponent
   ],
   imports: [
     BrowserModule,

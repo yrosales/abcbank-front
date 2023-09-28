@@ -1,4 +1,4 @@
-<div class="container card mb-2 py-4">
+<div class="container card my-2 py-4">
     <form [formGroup]="form">
         <div class="d-flex flex-row justify-content-between align-items-center">
             <div class="form-group input-group-lg">
@@ -13,11 +13,11 @@
         </div>
         <div class="d-flex flex-row justify-content-between align-items-center">
             <div class="form-group input-group-lg">
-                <label for="dateOfBirth">Day of birth: </label><input class="form-control" type="date"
+                <label for="dateOfBirth">Date of birth: </label><input class="form-control" type="date"
                     formControlName="dateOfBirth" />
             </div>
             <div class="form-group input-group-lg">
-                <label for="phoneNumbers">Phone number: </label><input class="form-control"
+                <label for="phoneNumbers">Phone number: </label><input class="form-control" type="number"
                     formControlName="phoneNumbers" />
             </div>
             <div class="form-group input-group-lg">
@@ -25,7 +25,7 @@
                     formControlName="personalPhoto" />
             </div>
             <div class="form-group">
-                <button class="btn btn-primary btn-block" (click)="submitForm()">
+                <button class="btn btn-primary btn-block mt-4" (click)="submitForm()">
                     Create
                 </button>
             </div>
