@@ -52,6 +52,7 @@ export class AppComponent implements OnInit {
   }
 
   addContact(contact: Contact) {
+    
     this.contactService.addContact(contact).subscribe(
       (response) => {
         this.getContacts();
@@ -61,9 +62,12 @@ export class AppComponent implements OnInit {
   }
 
   deleteContact(id: number) {
-    this.contactService.deleteContact(id).subscribe((response) => {
-      console.log(response);
-      this.getContacts();
+    this.contactService.deleteContact(id).subscribe({
+      next: (res) => {
+        console.log(res);
+        this.getContacts();
+      },
+      error: (e) => console.error(e)
     });
   }
 }

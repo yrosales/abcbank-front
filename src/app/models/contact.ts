@@ -2,7 +2,7 @@ export interface Contact {
     firstName: string;
     secondName: string;
     addresses: string;
-    dateOfBirth: number;
+    dateOfBirth: Date;
     phoneNumbers: string;
     personalPhoto: BinaryType;
 }

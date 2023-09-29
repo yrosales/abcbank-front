@@ -28,6 +28,6 @@ export class ContactService {
   }
 
   deleteContact(id: number) {
-    return this.http.delete(this.url + 'contacts/' + id);
+    return this.http.delete(this.url + 'contacts/' + id, {responseType:'text'});
   }
 }
