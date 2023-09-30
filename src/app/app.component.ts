@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { ContactService } from './contact.service';
-import { Contact } from './models/contact';
+import { ActionContact, Contact } from './models/contact';
 
 @Component({
   selector: 'app-root',
@@ -11,11 +11,11 @@ export class AppComponent implements OnInit {
   title = 'Contacts';
 
   contacts: Contact[];
+  public cleanEdition: boolean = false;
+  public isDeleting: boolean = false;
+  public selectedContact: Contact;
 
-  constructor(
-    private contactService: ContactService,
-    private detect: ChangeDetectorRef
-  ) {}
+  constructor(private contactService: ContactService) {}
 
   ngOnInit(): void {
     this.getContacts();
@@ -25,7 +25,6 @@ export class AppComponent implements OnInit {
     this.contactService.getContacts().subscribe(
       (resp) => {
         this.contacts = resp;
-        this.detect.detectChanges();
       },
       (error) => console.log(error)
     );
@@ -51,23 +50,41 @@ export class AppComponent implements OnInit {
     }
   }
 
-  addContact(contact: Contact) {
-    
-    this.contactService.addContact(contact).subscribe(
-      (response) => {
-        this.getContacts();
-      },
-      (error) => console.log('error')
-    );
+  onActionContact(actionContact: ActionContact) {
+    if (actionContact.action === 'create') {
+      this.contactService.addContact(actionContact.contact).subscribe(
+        (response) => {
+          this.getContacts();
+          this.cleanEdition = true;
+        },
+        (error) => console.log('error')
+      );
+    } else if (actionContact.action === 'update') {
+      this.contactService.updateContact(actionContact.contact,this.selectedContact.id).subscribe(
+        (response) => {
+          this.getContacts();
+          this.cleanEdition = true;
+        },
+        (error) => console.log('error')
+      );
+    }
   }
 
   deleteContact(id: number) {
+    this.isDeleting = true;
     this.contactService.deleteContact(id).subscribe({
       next: (res) => {
         console.log(res);
         this.getContacts();
+        this.isDeleting = false;
       },
-      error: (e) => console.error(e)
+      error: (e) => console.error(e),
     });
+  }
+
+  onSelectContact(contact: Contact) {
+    if (!this.isDeleting){
+      this.selectedContact = contact;
+    }
   }
 }

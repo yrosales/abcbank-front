@@ -1,8 +1,14 @@
 export interface Contact {
-    firstName: string;
-    secondName: string;
-    addresses: string;
-    dateOfBirth: Date;
-    phoneNumbers: string;
-    personalPhoto: BinaryType;
+  id?: number;
+  firstName: string;
+  secondName: string;
+  addresses: string;
+  dateOfBirth: Date;
+  phoneNumbers: string;
+  personalPhoto: BinaryType;
+}
+
+export interface ActionContact {
+  action: string;
+  contact: Contact;
 }

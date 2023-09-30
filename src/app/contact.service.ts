@@ -24,7 +24,11 @@ export class ContactService {
   }
 
   addContact(body: Contact): Observable<Contact> {
-    return this.http.post<Contact>(this.url + 'contacts', body);
+    return this.http.post<Contact>(`${this.url}contacts`, body);
+  }
+
+  updateContact(body: Contact, id:number): Observable<Contact> {
+    return this.http.put<Contact>(`${this.url}contacts/${id}`, body);
   }
 
   deleteContact(id: number) {

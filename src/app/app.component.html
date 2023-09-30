@@ -1,6 +1,6 @@
 <div class="container card mb-2">
   <h1 class="card-title">Contacts</h1>
-  <app-contact-edit (formData)="addContact($event)"></app-contact-edit>
+  <app-contact-edit (formData)="onActionContact($event)" [contactToEdit]="selectedContact" [clean]="cleanEdition"></app-contact-edit>
   <app-contact-filter (filterData)="filterContacts($event)"></app-contact-filter>
   <table class="table table-striped">
     <thead>
@@ -14,7 +14,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let elemento of contacts" style="cursor: pointer">
+      <tr *ngFor="let elemento of contacts" style="cursor: pointer" (click)="onSelectContact(elemento)">
         <td>{{ elemento.firstName }}</td>
         <td>{{ elemento.secondName }}</td>
         <td>{{ elemento.addresses }}</td>
@@ -22,13 +22,13 @@
         <td>{{ elemento.phoneNumbers }}</td>
         <td style="white-space: nowrap">
           <button class="btn btn-sm btn-danger btn-delete-user" (click)="deleteContact(elemento.id)">
-            <!--span *ngIf="user.isDeleting" class="spinner-border spinner-border-sm"></span-->
+            <span *ngIf="isDeleting" class="spinner-border spinner-border-sm"></span>
             <span>Delete</span>
           </button>
         </td>
       </tr>
       <tr *ngIf="!contacts">
-        <td colspan="4" class="text-center">
+        <td colspan="5" class="text-center">
           <span class="spinner-border spinner-border-lg align-center"></span>
         </td>
       </tr>
