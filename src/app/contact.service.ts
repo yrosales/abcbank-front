@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Contact } from './models/contact';
 import { Observable } from 'rxjs';
 import { PhoneNumber } from './models/phoneNumber';
+import { Address } from './models/address';
 
 @Injectable({
   providedIn: 'root',
@@ -30,6 +31,10 @@ export class ContactService {
 
   addContactPhoneNumber(body: PhoneNumber): Observable<PhoneNumber> {
     return this.http.post<PhoneNumber>(`${this.url}phone-number`, body);
+  }
+
+  addContactAddress(body: Address): Observable<Address> {
+    return this.http.post<Address>(`${this.url}address`, body);
   }
 
   updateContact(body: Contact, id:number): Observable<Contact> {

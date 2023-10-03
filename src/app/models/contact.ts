@@ -7,8 +7,8 @@ export interface Contact {
   secondName: string;
   dateOfBirth: Date;
   personalPhoto: BinaryType;
-  phoneNumbers: PhoneNumber[];
-  addresses: Address[];
+  phoneNumbers?: PhoneNumber[];
+  addresses?: Address[];
 }
 
 export interface ActionContact {

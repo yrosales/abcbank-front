@@ -52,31 +52,33 @@ export class AppComponent implements OnInit {
   }
 
   private callAddContact(contact: Contact) {
-    this.contactService
-      .addContact(contact)
-      .pipe(
-        switchMap((resp) => {
-          const updContact: Contact = resp;
-          contact.phoneNumbers.map((item) => {
-            item.contact = resp;
-            return item;
-          });
-          contact.addresses.map((item) => {
-            item.contact = resp;
-            return item;
-          });
-          updContact.phoneNumbers = contact.phoneNumbers;
-          updContact.addresses = contact.addresses;
-          return this.contactService.updateContact(updContact, resp.id);
-        })
-      )
-      .subscribe(
-        (resp) => {
-          this.getContacts();
-          this.cleanEdition = true;
-        },
-        (error) => console.log('error')
-      );
+    const body: Contact = {
+      firstName: contact.firstName,
+      secondName: contact.secondName,
+      dateOfBirth: contact.dateOfBirth,
+      personalPhoto: contact.personalPhoto,
+    };
+    this.contactService.addContact(body).subscribe((resp) => {
+      contact.phoneNumbers.map((item) => {
+        item.contact = resp;
+        return item;
+      });
+      contact.addresses.map((item) => {
+        item.contact = resp;
+        return item;
+      });
+      contact.phoneNumbers.forEach((element) => {
+        return this.contactService
+          .addContactPhoneNumber(element)
+          .subscribe((resp) => {});
+      });
+      contact.addresses.forEach((element) => {
+        return this.contactService
+          .addContactAddress(element)
+          .subscribe((resp) => {});
+      });
+      
+    });
   }
 
   onActionContact(actionContact: ActionContact) {
