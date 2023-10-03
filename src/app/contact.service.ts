@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Contact } from './models/contact';
 import { Observable } from 'rxjs';
+import { PhoneNumber } from './models/phoneNumber';
 
 @Injectable({
   providedIn: 'root',
@@ -25,6 +26,10 @@ export class ContactService {
 
   addContact(body: Contact): Observable<Contact> {
     return this.http.post<Contact>(`${this.url}contacts`, body);
+  }
+
+  addContactPhoneNumber(body: PhoneNumber): Observable<PhoneNumber> {
+    return this.http.post<PhoneNumber>(`${this.url}phone-number`, body);
   }
 
   updateContact(body: Contact, id:number): Observable<Contact> {

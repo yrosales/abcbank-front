@@ -8,30 +8,73 @@
                 <label for="secondName">Second Name: </label><input class="form-control" formControlName="secondName" />
             </div>
             <div class="form-group input-group-lg">
-                <label for="addresses">Address: </label><input class="form-control" formControlName="addresses" />
-            </div>
-        </div>
-        <div class="d-flex flex-row justify-content-between align-items-center">
-            <div class="form-group input-group-lg">
                 <label for="dateOfBirth">Date of birth: </label><input class="form-control" type="date"
                     formControlName="dateOfBirth" />
-            </div>
-            <div class="form-group input-group-lg">
-                <label for="phoneNumbers">Phone number: </label><input class="form-control" type="number"
-                    formControlName="phoneNumbers" />
             </div>
             <div class="form-group input-group-lg">
                 <label for="personalPhoto">Photo: </label><input class="form-control" type="file"
                     formControlName="personalPhoto" />
             </div>
-            <div class="form-group">
-                <button class="btn btn-primary btn-block mt-4" (click)="submitForm()">
-                    <span *ngIf="!isEditing">Create</span> <span *ngIf="isEditing">Update</span>
-                </button>
-                <button *ngIf="isEditing" class="btn btn-primary btn-block mt-4 mx-2" (click)="cancelEdit()">
-                    <span>Cancel</span>
-                </button>
+        </div>
+        <div class="d-flex flex-row justify-content-right">
+            <div>
+                <div class="d-flex flex-row justify-content-between align-items-center">
+                    <div class="form-group input-group-lg">
+                        <label for="phoneNumbers">Phone numbers: </label><input class="form-control" type="number"
+                            formControlName="phoneNumbers" />
+                    </div>
+                    <button class="btn btn-primary btn-block mt-4 mx-2" (click)="addPhoneNumber()">
+                        <span>Add</span>
+                    </button>
+                </div>
+                <table class="table table-striped">
+                    <tbody>
+                        <tr *ngFor="let item of phoneNumbers" style="cursor: pointer"
+                            (click)="onSelectPhoneNumber(item)">
+                            <td style="width: 90%;">{{ item.number }}</td>
+                            <td style="white-space: nowrap">
+                                <button class="btn btn-sm btn-danger btn-delete-user"
+                                    (click)="deletePhoneNumber(item)">
+                                    <span>Delete</span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
             </div>
+            <div class="w-100 mx-2">
+                <div class="d-flex flex-row justify-content-right align-items-center">
+                    <div class="form-group input-group-lg">
+                        <label for="addresses">Addresses: </label><input class="form-control w-100"
+                            formControlName="addresses" />
+                    </div>
+                    <button class="btn btn-primary btn-block mt-4 mx-2" (click)="addAddress()">
+                        <span>Add</span>
+                    </button>
+                </div>
+                <table class="table table-striped">
+                    <tbody>
+                        <tr *ngFor="let item of addresses" style="cursor: pointer"
+                            (click)="onSelectAddress(item)">
+                            <td style="width: 90%;">{{ item.address }}</td>
+                            <td style="white-space: nowrap">
+                                <button class="btn btn-sm btn-danger btn-delete-user"
+                                    (click)="deleteAddress(item)">
+                                    <span>Delete</span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="form-group">
+            <button [disabled]="form.invalid" class="btn btn-primary btn-block mt-4" (click)="submitForm()">
+                <span *ngIf="!isEditing">Create</span> <span *ngIf="isEditing">Update</span>
+            </button>
+            <button *ngIf="isEditing" class="btn btn-primary btn-block mt-4 mx-2" (click)="cancelEdit()">
+                <span>Cancel</span>
+            </button>
         </div>
     </form>
 </div>

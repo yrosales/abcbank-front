@@ -1,11 +1,14 @@
+import { Address } from "./address";
+import { PhoneNumber } from "./phoneNumber";
+
 export interface Contact {
   id?: number;
   firstName: string;
   secondName: string;
-  addresses: string;
   dateOfBirth: Date;
-  phoneNumbers: string;
   personalPhoto: BinaryType;
+  phoneNumbers: PhoneNumber[];
+  addresses: Address[];
 }
 
 export interface ActionContact {

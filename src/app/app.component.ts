@@ -1,6 +1,7 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ContactService } from './contact.service';
 import { ActionContact, Contact } from './models/contact';
+import { switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -50,23 +51,46 @@ export class AppComponent implements OnInit {
     }
   }
 
+  private callAddContact(contact: Contact) {
+    this.contactService
+      .addContact(contact)
+      .pipe(
+        switchMap((resp) => {
+          const updContact: Contact = resp;
+          contact.phoneNumbers.map((item) => {
+            item.contact = resp;
+            return item;
+          });
+          contact.addresses.map((item) => {
+            item.contact = resp;
+            return item;
+          });
+          updContact.phoneNumbers = contact.phoneNumbers;
+          updContact.addresses = contact.addresses;
+          return this.contactService.updateContact(updContact, resp.id);
+        })
+      )
+      .subscribe(
+        (resp) => {
+          this.getContacts();
+          this.cleanEdition = true;
+        },
+        (error) => console.log('error')
+      );
+  }
+
   onActionContact(actionContact: ActionContact) {
     if (actionContact.action === 'create') {
-      this.contactService.addContact(actionContact.contact).subscribe(
-        (response) => {
-          this.getContacts();
-          this.cleanEdition = true;
-        },
-        (error) => console.log('error')
-      );
+      this.callAddContact(actionContact.contact);
     } else if (actionContact.action === 'update') {
-      this.contactService.updateContact(actionContact.contact,this.selectedContact.id).subscribe(
-        (response) => {
-          this.getContacts();
-          this.cleanEdition = true;
-        },
-        (error) => console.log('error')
-      );
+      this.contactService
+        .updateContact(actionContact.contact, this.selectedContact.id)
+        .subscribe(
+          (response) => {
+            this.getContacts();
+          },
+          (error) => console.log('error')
+        );
     }
   }
 
@@ -83,7 +107,7 @@ export class AppComponent implements OnInit {
   }
 
   onSelectContact(contact: Contact) {
-    if (!this.isDeleting){
+    if (!this.isDeleting) {
       this.selectedContact = contact;
     }
   }
