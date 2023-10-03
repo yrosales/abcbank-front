@@ -33,12 +33,20 @@ export class ContactService {
     return this.http.post<PhoneNumber>(`${this.url}phone-number`, body);
   }
 
+  addContactPhoneNumbers(body: PhoneNumber[]){
+    return this.http.post(`${this.url}phone-numbers`, body);
+  }
+
   deleteContactPhoneNumber(id: number) {
     return this.http.delete(`${this.url}phone-number/${id}`, {responseType:'text'});
   }
 
-  addContactAddress(body: Address): Observable<Address> {
+  addContactAddress(body: Address){
     return this.http.post<Address>(`${this.url}address`, body);
+  }
+
+  addContactAddresses(body: Address[]){
+    return this.http.post(`${this.url}addresses`, body);
   }
 
   deleteContactAddress(id: number) {

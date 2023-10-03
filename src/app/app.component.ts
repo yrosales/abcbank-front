@@ -39,26 +39,22 @@ export class AppComponent implements OnInit {
         return item;
       });
       this.addContactsPhoneNumbers(phoneNumbers);
-      this.addContactsAddress(addresses);
+      this.addContactsAddresses(addresses);
       this.getContacts();
       this.cleanEdition = true;
     });
-  }  
-
-  private addContactsPhoneNumbers(phoneNumbers: PhoneNumber[]) {
-    phoneNumbers.forEach((element, index) => {
-      return this.contactService
-        .addContactPhoneNumber(element)
-        .subscribe((resp) => {});
-    });
   }
 
-  private addContactsAddress(addresses: Address[]) {
-    addresses.forEach((element, index) => {
-      return this.contactService
-        .addContactAddress(element)
-        .subscribe((resp) => {});
-    });
+  private addContactsPhoneNumbers(phoneNumbers: PhoneNumber[]) {
+    this.contactService
+      .addContactPhoneNumbers(phoneNumbers)
+      .subscribe((resp) => {});
+  }
+
+  private addContactsAddresses(addresses: Address[]) {
+    return this.contactService
+      .addContactAddresses(addresses)
+      .subscribe((resp) => {});
   }
 
   private deleteContactsPhoneNumbers(phoneNumbers: PhoneNumber[]) {
@@ -77,7 +73,6 @@ export class AppComponent implements OnInit {
     });
   }
 
-  
   private getContacts() {
     this.contactService.getContacts().subscribe(
       (resp) => {
@@ -110,9 +105,9 @@ export class AppComponent implements OnInit {
   onActionContact(actionContact: ActionContact) {
     if (actionContact.action === 'create') {
       this.callAddContact(actionContact.contact);
-    // } else if (actionContact.action === 'update') {
-    //   this.deleteContactsPhoneNumbers(this.selectedContact.phoneNumbers);
-    //   this.deleteContactsAddress(this.selectedContact.addresses);
+    } else if (actionContact.action === 'update') {
+      //   this.deleteContactsPhoneNumbers(this.selectedContact.phoneNumbers);
+      //   this.deleteContactsAddress(this.selectedContact.addresses);
       this.contactService
         .updateContact(actionContact.contact, this.selectedContact.id)
         .subscribe(
