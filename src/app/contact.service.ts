@@ -33,8 +33,16 @@ export class ContactService {
     return this.http.post<PhoneNumber>(`${this.url}phone-number`, body);
   }
 
+  deleteContactPhoneNumber(id: number) {
+    return this.http.delete(`${this.url}phone-number/${id}`, {responseType:'text'});
+  }
+
   addContactAddress(body: Address): Observable<Address> {
     return this.http.post<Address>(`${this.url}address`, body);
+  }
+
+  deleteContactAddress(id: number) {
+    return this.http.delete(`${this.url}address/${id}`, {responseType:'text'});
   }
 
   updateContact(body: Contact, id:number): Observable<Contact> {
@@ -42,6 +50,6 @@ export class ContactService {
   }
 
   deleteContact(id: number) {
-    return this.http.delete(this.url + 'contacts/' + id, {responseType:'text'});
+    return this.http.delete(`${this.url}contacts/${id}`, {responseType:'text'});
   }
 }

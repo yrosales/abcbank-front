@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ContactService } from './contact.service';
 import { ActionContact, Contact } from './models/contact';
-import { switchMap } from 'rxjs/operators';
+import { PhoneNumber } from './models/phoneNumber';
+import { Address } from './models/address';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +14,6 @@ export class AppComponent implements OnInit {
 
   contacts: Contact[];
   public cleanEdition: boolean = false;
-  public isDeleting: boolean = false;
   public selectedContact: Contact;
 
   constructor(private contactService: ContactService) {}
@@ -22,6 +22,62 @@ export class AppComponent implements OnInit {
     this.getContacts();
   }
 
+  private callAddContact(contact: Contact) {
+    const body: Contact = {
+      firstName: contact.firstName,
+      secondName: contact.secondName,
+      dateOfBirth: contact.dateOfBirth,
+      personalPhoto: contact.personalPhoto,
+    };
+    this.contactService.addContact(body).subscribe((resp) => {
+      const phoneNumbers = contact.phoneNumbers.map((item) => {
+        item.contact = resp;
+        return item;
+      });
+      const addresses = contact.addresses.map((item) => {
+        item.contact = resp;
+        return item;
+      });
+      this.addContactsPhoneNumbers(phoneNumbers);
+      this.addContactsAddress(addresses);
+      this.getContacts();
+      this.cleanEdition = true;
+    });
+  }  
+
+  private addContactsPhoneNumbers(phoneNumbers: PhoneNumber[]) {
+    phoneNumbers.forEach((element, index) => {
+      return this.contactService
+        .addContactPhoneNumber(element)
+        .subscribe((resp) => {});
+    });
+  }
+
+  private addContactsAddress(addresses: Address[]) {
+    addresses.forEach((element, index) => {
+      return this.contactService
+        .addContactAddress(element)
+        .subscribe((resp) => {});
+    });
+  }
+
+  private deleteContactsPhoneNumbers(phoneNumbers: PhoneNumber[]) {
+    phoneNumbers.forEach((element) => {
+      return this.contactService
+        .deleteContactPhoneNumber(element.id)
+        .subscribe((resp) => {});
+    });
+  }
+
+  private deleteContactsAddress(addresses: Address[]) {
+    addresses.forEach((element) => {
+      return this.contactService
+        .deleteContactAddress(element.id)
+        .subscribe((resp) => {});
+    });
+  }
+
+  
   private getContacts() {
     this.contactService.getContacts().subscribe(
       (resp) => {
@@ -51,40 +107,12 @@ export class AppComponent implements OnInit {
     }
   }
 
-  private callAddContact(contact: Contact) {
-    const body: Contact = {
-      firstName: contact.firstName,
-      secondName: contact.secondName,
-      dateOfBirth: contact.dateOfBirth,
-      personalPhoto: contact.personalPhoto,
-    };
-    this.contactService.addContact(body).subscribe((resp) => {
-      contact.phoneNumbers.map((item) => {
-        item.contact = resp;
-        return item;
-      });
-      contact.addresses.map((item) => {
-        item.contact = resp;
-        return item;
-      });
-      contact.phoneNumbers.forEach((element) => {
-        return this.contactService
-          .addContactPhoneNumber(element)
-          .subscribe((resp) => {});
-      });
-      contact.addresses.forEach((element) => {
-        return this.contactService
-          .addContactAddress(element)
-          .subscribe((resp) => {});
-      });
-      
-    });
-  }
-
   onActionContact(actionContact: ActionContact) {
     if (actionContact.action === 'create') {
       this.callAddContact(actionContact.contact);
-    } else if (actionContact.action === 'update') {
+    // } else if (actionContact.action === 'update') {
+    //   this.deleteContactsPhoneNumbers(this.selectedContact.phoneNumbers);
+    //   this.deleteContactsAddress(this.selectedContact.addresses);
       this.contactService
         .updateContact(actionContact.contact, this.selectedContact.id)
         .subscribe(
@@ -97,20 +125,18 @@ export class AppComponent implements OnInit {
   }
 
   deleteContact(id: number) {
-    this.isDeleting = true;
     this.contactService.deleteContact(id).subscribe({
       next: (res) => {
         console.log(res);
         this.getContacts();
-        this.isDeleting = false;
+        this.selectedContact = null;
+        this.cleanEdition = true;
       },
       error: (e) => console.error(e),
     });
   }
 
   onSelectContact(contact: Contact) {
-    if (!this.isDeleting) {
-      this.selectedContact = contact;
-    }
+    this.selectedContact = contact;
   }
 }

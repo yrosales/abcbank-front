@@ -9,6 +9,7 @@ export interface Contact {
   personalPhoto: BinaryType;
   phoneNumbers?: PhoneNumber[];
   addresses?: Address[];
+  isDeleting?:boolean;
 }
 
 export interface ActionContact {
