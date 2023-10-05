@@ -1,16 +1,16 @@
+import { DatePipe } from '@angular/common';
 import {
   Component,
   EventEmitter,
-  OnInit,
-  Output,
   Input,
   OnChanges,
+  OnInit,
+  Output,
 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Contact, ActionContact } from '../models/contact';
-import { DatePipe } from '@angular/common';
-import { PhoneNumber } from '../models/phoneNumber';
 import { Address } from '../models/address';
+import { ActionContact, Contact } from '../models/contact';
+import { PhoneNumber } from '../models/phoneNumber';
 
 @Component({
   selector: 'app-contact-edit',
@@ -72,8 +72,8 @@ export class ContactEditComponent implements OnInit, OnChanges {
       phoneNumbers: '',
       addresses: '',
     });
-    this.phoneNumbers = contact.phoneNumbers;
-    this.addresses = contact.addresses;
+    this.phoneNumbers = [...contact.phoneNumbers];
+    this.addresses = [...contact.addresses];
   }
 
   public cancelEdit() {
@@ -83,8 +83,8 @@ export class ContactEditComponent implements OnInit, OnChanges {
 
   public onSelectPhoneNumber(phoneNumber: PhoneNumber) {}
 
-  public deletePhoneNumber(phoneNumber:PhoneNumber) {
-    this.phoneNumbers.splice(this.phoneNumbers.indexOf(phoneNumber),1);
+  public deletePhoneNumber(phoneNumber: PhoneNumber) {
+    this.phoneNumbers.splice(this.phoneNumbers.indexOf(phoneNumber), 1);
   }
 
   public addPhoneNumber() {
@@ -94,14 +94,19 @@ export class ContactEditComponent implements OnInit, OnChanges {
         return parseInt(item.number) === this.form.value.phoneNumbers;
       })
     ) {
-      this.phoneNumbers.push({ number: this.form.value.phoneNumbers, contact: this.contactToEdit });
+      this.phoneNumbers.push({
+        number: this.form.value.phoneNumbers,
+        contact: this.contactToEdit,
+      });
       this.form.patchValue({ phoneNumbers: '' });
     }
   }
 
   public onSelectAddress(phoneNumber: PhoneNumber) {}
 
-  public deleteAddress() {}
+  public deleteAddress(address: Address) {
+    this.addresses.splice(this.addresses.indexOf(address), 1);
+  }
 
   public addAddress() {
     if (
@@ -118,7 +123,7 @@ export class ContactEditComponent implements OnInit, OnChanges {
   ngOnChanges() {
     if (this.clean) {
       this.cleanForm();
-      this.clean = false;
+      this.isEditing = false;
     } else if (this.contactToEdit) {
       this.initForm(this.contactToEdit);
       this.isEditing = true;

@@ -1,9 +1,9 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Contact } from './models/contact';
 import { Observable } from 'rxjs';
-import { PhoneNumber } from './models/phoneNumber';
 import { Address } from './models/address';
+import { Contact } from './models/contact';
+import { PhoneNumber } from './models/phoneNumber';
 
 @Injectable({
   providedIn: 'root',
@@ -33,31 +33,53 @@ export class ContactService {
     return this.http.post<PhoneNumber>(`${this.url}phone-number`, body);
   }
 
-  addContactPhoneNumbers(body: PhoneNumber[]){
+  addContactPhoneNumbers(body: PhoneNumber[]) {
     return this.http.post(`${this.url}phone-numbers`, body);
   }
 
   deleteContactPhoneNumber(id: number) {
-    return this.http.delete(`${this.url}phone-number/${id}`, {responseType:'text'});
+    return this.http.delete(`${this.url}phone-number/${id}`, {
+      responseType: 'text',
+    });
   }
 
-  addContactAddress(body: Address){
+  deleteContactPhoneNumbers(body: PhoneNumber[]) {
+    //return this.http.delete(`${this.url}phone-numbers`, {body});
+    return this.http.request('delete', `${this.url}contact-phone-numbers`, {
+      body: body,
+      responseType: 'text',
+    });
+  }
+
+  addContactAddress(body: Address) {
     return this.http.post<Address>(`${this.url}address`, body);
   }
 
-  addContactAddresses(body: Address[]){
+  addContactAddresses(body: Address[]) {
     return this.http.post(`${this.url}addresses`, body);
   }
 
   deleteContactAddress(id: number) {
-    return this.http.delete(`${this.url}address/${id}`, {responseType:'text'});
+    return this.http.delete(`${this.url}address/${id}`, {
+      responseType: 'text',
+    });
   }
 
-  updateContact(body: Contact, id:number): Observable<Contact> {
+  deleteContactAddresses(body: Address[]) {
+    //return this.http.delete(`${this.url}phone-numbers`, {body});
+    return this.http.request('delete', `${this.url}contact-addresses`, {
+      body: body,
+      responseType: 'text',
+    });
+  }
+
+  updateContact(body: Contact, id: number): Observable<Contact> {
     return this.http.put<Contact>(`${this.url}contacts/${id}`, body);
   }
 
   deleteContact(id: number) {
-    return this.http.delete(`${this.url}contacts/${id}`, {responseType:'text'});
+    return this.http.delete(`${this.url}contacts/${id}`, {
+      responseType: 'text',
+    });
   }
 }

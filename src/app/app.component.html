@@ -17,7 +17,7 @@
         <td>{{ item.secondName }}</td>
         <td>{{ item.dateOfBirth | date: 'dd/MM/yyyy'}}</td>
         <td style="white-space: nowrap">
-          <button class="btn btn-sm btn-danger btn-delete-user" (click)="deleteContact(item.id)">
+          <button class="btn btn-sm btn-danger btn-delete-user" (click)="deleteContact(item)">
             <span *ngIf="item.isDeleting" class="spinner-border spinner-border-sm"></span>
             <span>Delete</span>
           </button>
